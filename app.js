@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const ejs = require('ejs');
 const bodyParser = require("body-parser");
@@ -12,11 +13,11 @@ app.set('view engine', 'ejs');
 //connecting to db
 mongoose.connect("mongodb://0.0.0.0:27017/UserDB")
 .then(connection=>{
-    console.log("Successfully Connected")
+    console.log("Successfully Connected");
 })
 .catch(err=>{
-    console.log("Connection Failed")
-    console.log(err)
+    console.log("Connection Failed");
+    console.log(err);
 })
 
 //defining a schema using ORM for user
@@ -26,7 +27,7 @@ const userSchema=new mongoose.Schema({
 })
 
 //encryption
-secretKey="MyNameISFatima"
+secretKey=process.env.SECRET_KEY
 userSchema.plugin(encrypt,{secret:secretKey,encryptedFields: ['password']})
 
 //model
