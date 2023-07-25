@@ -2,6 +2,7 @@ const express = require("express");
 const ejs = require('ejs');
 const bodyParser = require("body-parser");
 const mongoose=require("mongoose");
+const encrypt=require("mongoose-encryption");
 
 const app = express();
 app.use(bodyParser.urlencoded({extended:true}));
@@ -18,11 +19,17 @@ mongoose.connect("mongodb://0.0.0.0:27017/UserDB")
     console.log(err)
 })
 
-//defining a schema and then model using ORM for user
+//defining a schema using ORM for user
 const userSchema=new mongoose.Schema({
     email:{type:String},
     password:{type:String}
 })
+
+//encryption
+secretKey="MyNameISFatima"
+userSchema.plugin(encrypt,{secret:secretKey,encryptedFields: ['password']})
+
+//model
 const User=  mongoose.model('User',userSchema,"Users");
 
 
